@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wachtwoordgenerator</title>
+    <link rel="stylesheet" href="styles3.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Wachtwoordgenerator</h1>
+        <label for="length">Wachtwoord Lengte:</label>
+        <input type="number" id="length" min="4" max="30" value="12">
+        <br>
+        <input type="checkbox" id="uppercase" checked>
+        <label for="uppercase">Hoofdletters Gebruiken</label>
+        <br>
+        <input type="checkbox" id="lowercase" checked>
+        <label for="lowercase">Kleine Letters Gebruiken</label>
+        <br>
+        <input type="checkbox" id="numbers" checked>
+        <label for="numbers">Nummers Gebruiken</label>
+        <br>
+        <input type="checkbox" id="symbols" checked>
+        <label for="symbols">Symbolen Gebruiken</label>
+        <br>
+        <button id="generate">Genereer Wavchtwoord</button>
+        <br>
+        <textarea id="password" rows="3" readonly></textarea>
+        <p id="entropy"></p>
+    </div>
+
+    <script>
+        // Functie om een willekeurig karakter uit een string te kiezen
+    function getRandomChar(characters) {
+        return characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+
+    // Functie om wachtwoord te genereren
+    function generatePassword() {
+        const length = document.getElementById('length').value;
+        const uppercase = document.getElementById('uppercase').checked;
+        const lowercase = document.getElementById('lowercase').checked;
+        const numbers = document.getElementById('numbers').checked;
+        const symbols = document.getElementById('symbols').checked;
+
+        let characters = '';
+        let entropy = 0;
+
+        if (uppercase) {
+            characters += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        }
+        if (lowercase) {
+            characters += 'abcdefghijklmnopqrstuvwxyz';
+        }
+        if (numbers) {
+            characters += '0123456789';
+        }
+        if (symbols) {
+            characters += '!@#$%^&*()_+[]{}|;:,.<>?';
+        }
+
+        const poolSize = characters.length;
+        entropy = Math.log2(poolSize ** length).toFixed(2);
+
+        let password = '';
+        for (let i = 0; i < length; i++) {
+            password += getRandomChar(characters);
+        }
+
+        document.getElementById('password').value = password;
+        document.getElementById('entropy').textContent = `Entropie: ${entropy} bits`;
+    }
+    // Event listener voor de knop om het wachtwoord te genereren
+    document.getElementById('generate').addEventListener('click', generatePassword);
+    </script>
+</body>
+</html>
